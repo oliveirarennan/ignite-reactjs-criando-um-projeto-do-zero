@@ -6,11 +6,11 @@ export default function Header(): JSX.Element {
   // TODO
   return (
     <header>
-      <div className={commonStyles.container}>
-        <div className={commonStyles.content}>
+      <div className={styles.container}>
+        <div className={styles.content}>
           <Link href="/">
             <a>
-              <img src="/img/logo.svg" alt="Logotipo spacetraveling" />
+              <img src="/img/logo.svg" alt="logo" />
             </a>
           </Link>
         </div>
