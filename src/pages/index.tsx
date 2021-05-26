@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import Prismic from '@prismicio/client';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { format } from 'date-fns';
@@ -31,6 +32,7 @@ interface HomeProps {
 export default function Home({ postsPagination }: HomeProps): JSX.Element {
   // TODO
   const [posts, setPosts] = useState(postsPagination);
+  console.log('### POSTS VINDO DO GET STATIC PROPS', posts);
 
   function handleLoadMorePost(): void {
     async function loadMorePosts(): Promise<void> {
@@ -51,36 +53,41 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
 
         const newPostStateData = {
           next_page: fetchData.next_page,
-          results: [...posts.results, ...formattedFetchData.results],
+          results: [...posts.results, ...formattedFetchData],
         };
 
         setPosts(newPostStateData);
-      } catch {
-        console.info('No more posts to load.');
+        console.log('#### POST VINDO DO CARREGAR MAIS POST ', posts);
+      } catch (err) {
+        console.info('No more posts to load.', err);
       }
     }
 
     loadMorePosts();
   }
   return (
-    <main className={styles.container}>
-      <section className={styles.content}>
-        <ul>
+    <main className={commonStyles.container}>
+      <section className={commonStyles.content}>
+        <ul className={styles.postList}>
           {posts.results.map(post => (
             <li key={post.uid}>
-              <h1>{post.data.title}</h1>
-              <h2>{post.data.subtitle}</h2>
-              <p>
-                <span>
-                  <FiCalendar size={20} />
-                  <time>{post.first_publication_date}</time>
-                </span>
+              <Link href={`/post/${post.uid}`}>
+                <a>
+                  <h1>{post.data.title}</h1>
+                  <h2>{post.data.subtitle}</h2>
+                  <p>
+                    <span>
+                      <FiCalendar size={20} />
+                      <time>{post.first_publication_date}</time>
+                    </span>
 
-                <span>
-                  <FiUser size={20} />
-                  {post.data.author}
-                </span>
-              </p>
+                    <span>
+                      <FiUser size={20} />
+                      {post.data.author}
+                    </span>
+                  </p>
+                </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -101,7 +108,7 @@ export const getStaticProps: GetStaticProps = async () => {
     [Prismic.predicates.at('document.type', 'posts')],
     {
       fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
-      pageSize: 1,
+      pageSize: 2,
     }
   );
 

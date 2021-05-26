@@ -1,1 +1,23 @@
-// TODO
+.container {
+  max-width: 1440px;
+  height: calc(100vh - 5rem);
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+
+  button{
+    margin-top: 4.73rem;
+    color: var(--highlight);
+    font-size: 1.125rem;
+    line-height: 1.375rem;
+    background: transparent;
+    border: none;
+    transform: filter 0.2s;
+
+    &:hover{
+      filter: brightness(0.8);
+    }
+  }
+}
