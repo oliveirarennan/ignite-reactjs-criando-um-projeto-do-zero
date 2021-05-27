@@ -78,7 +78,11 @@ export default function Post({ post }: PostProps): JSX.Element {
             <p>
               <span>
                 <FiCalendar size={20} />
-                <time>{post.first_publication_date}</time>
+                <time>
+                  {format(new Date(post.first_publication_date), 'dd MMM Y', {
+                    locale: ptBR,
+                  })}
+                </time>
               </span>
 
               <span>
@@ -88,7 +92,7 @@ export default function Post({ post }: PostProps): JSX.Element {
 
               <span>
                 <FiClock size={20} />
-                {readTime}min
+                {readTime} min
               </span>
             </p>
           </header>
@@ -142,16 +146,7 @@ export const getStaticProps: GetStaticProps = async context => {
 
   const post = {
     uid: response.uid,
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      'dd MMM Y',
-      { locale: ptBR }
-    ),
-    last_publication_date: format(
-      new Date(response.last_publication_date),
-      'dd MMM Y',
-      { locale: ptBR }
-    ),
+    first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
       subtitle: response.data.subtitle,
